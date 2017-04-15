@@ -1,0 +1,42 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Vue</title>
+		<style type="text/css">
+			.red { color: red; }
+			.blue { color: blue; }
+			.isLoading { color: yellow; }
+		</style>
+	</head>
+	<body>
+		<!-- EL element -->
+		<div id="root">
+
+			<!-- Computed property -->
+			<p> {{ reversedMessage }} </p>
+
+			<!-- v-model -->
+			<input value="" placeholder="Name" v-model="newName" />
+			
+			<!-- v-bind -->
+			<a v-bind:href="href">Bind example</a>
+
+			<!-- :class -->
+			<p :class="{ isLoading: true }">Class expression</a>
+
+			<!-- :class -->
+			<p :class="classname">Class example</a>
+
+			<!-- Events short syntax -->
+			<button @click="addName()">Add name</button>
+
+			<!-- v-for, v-text -->
+			<ul>
+				<li v-for="name in names" v-text="name"></li>
+			</ul>
+		</div>
+
+		<script src="node_modules/vue/dist/vue.js"></script>
+		<script src="appEpisode2.js"></script>
+	</body>
+</html>
