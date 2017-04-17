@@ -1,4 +1,4 @@
-var UsersModel = require('./UsersModel.js');
+var UserModel = require('./UserModel.js');
 
 module.exports = function( app ){
 

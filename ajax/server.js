@@ -1,8 +1,10 @@
 const express = require('express');
 const app = express();
 const PORT = 9090;
+const bodyParser = require('body-parser');
 
-// Registering routes and models
+app.use(bodyParser.json({ extended: true }));
+
 require('./modules/index')( app );
 
 // Sending main layout
