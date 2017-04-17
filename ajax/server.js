@@ -1,20 +1,16 @@
-const path = require('path');
 const express = require('express');
-
 const app = express();
-
 const PORT = 9090;
 
+// Registering routes and models
+require('./modules/index')( app );
+
+// Sending main layout
 app.get('/', (req, res) => {
-	console.log("hey")
   	res.sendFile(__dirname + '/index.html');
 });
 
-
-app.get('/api/users', (req, res) => {
-  	res.json(['Ana', 'Ori'])
-});
-
+// Launching the server
 app.listen(PORT, 'localhost', err => {
   if (err) {
     console.log(err);
