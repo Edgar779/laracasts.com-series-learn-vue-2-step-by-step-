@@ -8,16 +8,28 @@
       </li>
     </ul>
     
-    <form action="/stories" @submit.prevent="onSubmit">
-      <div class="form-group" v-bind:class="{'has-error': errors.exists() && submited}">
+    <form action="/stories" @submit.prevent="onSubmit" @keydown="errors.clear($event)">
+      <div  class="form-group" 
+            v-bind:class="{'has-error': errors.get('title') && submited}"
+            @keydown="errors.clear('title')">
         <label>Title:</label>
-         <input type="text" class="form-control" v-model="story.title">
-         <span class="help is-danger" v-text="errors.get('title')"></span>
+         <input type="text" 
+                name="title"
+                class="form-control" 
+                v-model="story.title">
+         <span  class="help is-danger" 
+                v-text="errors.get('title')"></span>
       </div>
-      <div class="form-group" v-bind:class="{'has-error': errors.exists() && submited}">
+      <div  class="form-group" 
+            v-bind:class="{'has-error': errors.get('body') && submited}">
         <label>Body:</label>
-        <textarea name="body" v-model="story.body" class="form-control"></textarea>
-        <span class="help is-danger" v-text="errors.get('body')"></span>
+        <textarea class="form-control"
+                  name="body"
+                  v-model="story.body"                   
+                  ></textarea>
+
+        <span class="help is-danger" 
+              v-text="errors.get('body')"></span>
       </div>
       <button type="submit" class="btn btn-default">Submit</button>
     </form>
@@ -35,13 +47,13 @@ class Errors {
       return this.errors[field].message;
     }
   }
-  exists() {
-    return this.errors != undefined;
-  }
   record( errors ) {
-    console.log(errors)
     this.errors = errors;
-
+  }
+  clear( ev ) {
+    if ( ev.target ) {
+      delete this.errors[ ev.target.name ];
+    } 
   }
 }
 
@@ -79,7 +91,6 @@ export default {
     }
   },
   mounted() {
-
     // Get all stories 
     Stories.getAll().then( stories => this.stories = stories.data );
 
@@ -87,22 +98,18 @@ export default {
   methods: {
     onSubmit( story ) {
       this.submited = true;
-      Stories.create( this.story )
-              .then( ( stories ) => {
-                this.stories = stories.data;
-                this.submited = false;
-                
-              })
+      var action = ( story.hasOwnProperty("_id") ) ? "update" : "create";
+      Stories[ action ]( this.story )
+              .then( this.onSuccess )
               .catch( ( errors ) => { 
                 this.errors.record( errors.response.data ) 
               });
     },
-    update( story ) {
-      Stories.update( story ).then( () => {}).catch( () => {});
+    onSuccess( stories ) {
+      this.stories = stories.data;
+      this.story.title = this.story.body = "";
+      this.submited = false;
     },
-    delete( story ) {
-      Stories.delete( story ).then( () => {}).catch( () => {});
-    }
   }
 }
 </script>
