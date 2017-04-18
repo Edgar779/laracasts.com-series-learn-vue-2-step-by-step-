@@ -5,6 +5,10 @@
       <li v-for="story in stories">
         <h3> {{ story.title }} </h3>
         <p>{{ story.body }}</p>
+        <ul>
+          <li><button @click="update( story )">Update</button></li>
+          <li><button @click="remove( story )">Delete</button></li>
+        </ul>
       </li>
     </ul>
     
@@ -67,8 +71,8 @@ class Stories {
   static create( story ) {
     return axios.post('/api/stories', story);
   }
-  static delete( story ) {
-    return axios.delete('/api/stories/' + story.id ); 
+  static delete( _id ) {
+    return axios.delete('/api/stories/' + _id ); 
   }
 }
 
@@ -110,13 +114,33 @@ export default {
       this.story.title = this.story.body = "";
       this.submited = false;
     },
+    update( story ) {},
+    // Removes a story
+    remove( story ) {
+      Stories.delete( story._id ).then( ( response ) => {
+        if ( response.data.success ) {
+          this.stories.splice( this.stories.indexOf( story ), 1);
+        }
+      });
+    }
   }
 }
 </script>
 
 <style>
   /* TODO: add reset.css */
-
+  #stories > ul {
+    overflow-y: scroll;
+    height: 50vh;
+  }
+  #stories ul li {
+    position: relative;
+  }
+  #stories ul li ul {
+    position: absolute;
+    top:0;
+    right: 0;
+  }
   ul li {
     list-style: none;
   }

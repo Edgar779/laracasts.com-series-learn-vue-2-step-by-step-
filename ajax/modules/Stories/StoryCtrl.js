@@ -32,4 +32,17 @@ module.exports = ( app ) => {
     // Updates a story
 
     // Deletes a story
+    app.delete('/api/stories/:_id', ( req, res ) => {
+
+    	Story.deleteOne(req.body, function (err) {
+    		if (err) {
+		  		res.status( 422 ).send( err.errors );
+		  	}
+		  	else {
+				res.json({ success: true });
+			}
+    	}).catch( ( err ) => {
+			return next( err );
+		});
+	});
 }
