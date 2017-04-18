@@ -1,10 +1,14 @@
-var UserModel = require('./UserModel.js');
+var User = require('./UserModel.js');
 
 module.exports = function( app ){
 
-    app.get('/api/users', function(req, res){
-        res.json( ['Ori','Ale'] );
+	// User login without security
+    app.post('/api/user/login', function( req, res ) {
+    	User.findOne( req.body ).then( ( user ) => {
+        	res.json(user);
+        })
+        .catch( (err ) => {
+        	res.status(422).json(err);
+        });
     });
-
-    //other routes..
 }
