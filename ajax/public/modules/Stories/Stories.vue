@@ -1,16 +1,23 @@
 <template>
-  <div id="stories">
+  <div>
+    <h1> Stories </h1>
     <ul>
       <li v-for="story in stories">
         <h3> {{ story.title }} </h3>
         <p>{{ story.body }}</p>
       </li>
     </ul>
-
-    <form action="/stories" @submit.prevent="onSubmit" class="form">
-      <input type="text" name="title" v-model="story.title">
-      <textarea class="form-input" name="body" v-model="story.body"></textarea>
-      <button type="submit" class="btn btn-primary" >Save</button>
+    
+    <form action="/stories" @submit.prevent="onSubmit">
+      <div class="form-group">
+        <label for="title">Title:</label>
+         <input type="text" class="form-control" name="title" v-model="story.title" required>
+      </div>
+      <div class="form-group">
+        <label for="body">Body:</label>
+        <textarea name="body" v-model="story.body" class="form-control" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-default">Submit</button>
     </form>
   </div>
 </template>
