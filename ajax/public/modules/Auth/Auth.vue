@@ -66,7 +66,7 @@ export default {
       this.submited = false;
       if ( response.data._id ) {
         // redirect to home
-        window.router.go('/home');
+        window.router.push('/home');
       }
     }
   }

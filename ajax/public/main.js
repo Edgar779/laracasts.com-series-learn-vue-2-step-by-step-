@@ -22,7 +22,7 @@ window.router = new VueRouter({ routes });
 
 new Vue({
 	el: "#app",
-	components: [ Auth ],
+	components: [ Auth, Home ],
 	// es6 shortcut for router: router
 	router: window.router
 });
