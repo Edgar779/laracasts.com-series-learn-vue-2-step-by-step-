@@ -1,4 +1,4 @@
-<template>
+<!--<template>
   <div id="app">
     <ul>
       <li v-for="story in stories" v-text="story"></li>
@@ -31,3 +31,4 @@ export default {
 
 <style>
 </style>
+*/
