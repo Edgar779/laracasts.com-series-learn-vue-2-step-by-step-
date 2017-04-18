@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h1> Stories </h1>
+  <div class="col-md-12">
+    <h1> {{ pageTitle }} </h1>
     <ul>
       <li v-for="story in stories">
         <h3> {{ story.title }} </h3>
@@ -9,13 +9,15 @@
     </ul>
     
     <form action="/stories" @submit.prevent="onSubmit">
-      <div class="form-group">
-        <label for="title">Title:</label>
-         <input type="text" class="form-control" name="title" v-model="story.title" required>
+      <div class="form-group" v-bind:class="{'has-error': errors.exists() && submited}">
+        <label>Title:</label>
+         <input type="text" class="form-control" v-model="story.title">
+         <span class="help is-danger" v-text="errors.get('title')"></span>
       </div>
-      <div class="form-group">
-        <label for="body">Body:</label>
-        <textarea name="body" v-model="story.body" class="form-control" required></textarea>
+      <div class="form-group" v-bind:class="{'has-error': errors.exists() && submited}">
+        <label>Body:</label>
+        <textarea name="body" v-model="story.body" class="form-control"></textarea>
+        <span class="help is-danger" v-text="errors.get('body')"></span>
       </div>
       <button type="submit" class="btn btn-default">Submit</button>
     </form>
@@ -26,12 +28,20 @@
 
 class Errors {
   constructor() {
-    this.errors = [];
+    this.errors = {};
   }
   get( field ) {
     if ( this.errors[field] ) {
-      return this.errors[field][0];
+      return this.errors[field].message;
     }
+  }
+  exists() {
+    return this.errors != undefined;
+  }
+  record( errors ) {
+    console.log(errors)
+    this.errors = errors;
+
   }
 }
 
@@ -58,21 +68,34 @@ export default {
         title: "",
         body: ""
       },
+      submited: false,
       stories: [],
       errors: new Errors()
+    }
+  },
+  computed: {
+    pageTitle() {
+      return ( this.story["_id"] ) ? "Update story" : "Stories";
     }
   },
   mounted() {
 
     // Get all stories 
-    Stories.getAll().then( stories => this.stories = stories.data )
-                    .catch( error => console.log(error) );
+    Stories.getAll().then( stories => this.stories = stories.data );
+
   },
   methods: {
-    onSubmit() {
+    onSubmit( story ) {
+      this.submited = true;
       Stories.create( this.story )
-              .then( ( stories ) => this.stories = stories.data )
-              .catch( () => {});
+              .then( ( stories ) => {
+                this.stories = stories.data;
+                this.submited = false;
+                
+              })
+              .catch( ( errors ) => { 
+                this.errors.record( errors.response.data ) 
+              });
     },
     update( story ) {
       Stories.update( story ).then( () => {}).catch( () => {});

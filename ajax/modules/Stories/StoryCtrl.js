@@ -19,9 +19,7 @@ module.exports = ( app ) => {
 		
 		Story.create(req.body, ( err, numAffected ) => {
 		  	if (err) {
-		  		res.send({
-		        	err: err.errors
-		      	});
+		  		res.status( 422 ).send( err.errors );
 		  	}
 		  	else {
 				Story.find({}, ( err, stories ) => res.json( stories ));
