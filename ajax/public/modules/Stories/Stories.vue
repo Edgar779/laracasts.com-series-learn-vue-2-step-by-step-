@@ -97,12 +97,12 @@ export default {
   mounted() {
     // Get all stories 
     Stories.getAll().then( stories => this.stories = stories.data );
-
   },
   methods: {
     onSubmit( story ) {
       this.submited = true;
       var action = ( story.hasOwnProperty("_id") ) ? "update" : "create";
+
       Stories[ action ]( this.story )
               .then( this.onSuccess )
               .catch( ( errors ) => { 
@@ -114,13 +114,13 @@ export default {
       this.story.title = this.story.body = "";
       this.submited = false;
     },
-    update( story ) {},
+    update( story ) {
+
+    },
     // Removes a story
     remove( story ) {
       Stories.delete( story._id ).then( ( response ) => {
-        if ( response.data.success ) {
-          this.stories.splice( this.stories.indexOf( story ), 1);
-        }
+        if ( response.data.success && this.stories.splice( this.stories.indexOf( story ), 1));
       });
     }
   }

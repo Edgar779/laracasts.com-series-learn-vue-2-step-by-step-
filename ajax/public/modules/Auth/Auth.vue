@@ -59,14 +59,14 @@ export default {
       Auth.login( this.user )
               .then( this.onSuccess )
               .catch( ( errors ) => { 
+                console.log(errors)
                 this.errors.record( errors.response.data ) 
               });
     },
     onSuccess( response ) {
-      this.submited = false;
       if ( response.data._id ) {
-        // redirect to home
-        window.router.push('/home');
+        this.$store.commit("login", response.data );
+        this.$router.push("/home");
       }
     }
   }

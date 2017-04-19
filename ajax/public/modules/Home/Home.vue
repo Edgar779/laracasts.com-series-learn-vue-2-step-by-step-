@@ -1,30 +1,28 @@
 <template>
   <div class="col-md-12">
+    <user-info></user-info>
     <h1>Home</h1>
-    
   </div>
 </template>
 
 <script>
-
 export default {
-  name: 'home',
-  data () {
-    return {
-    }
-  },
-  methods: {
-  }
+  name: 'home'
 }
 </script>
 
 <style>
-  div.login {
-    margin:0 auto;
+  header {
+    position: fixed;
+    top:0;
+    left:0;
+    background: blue;
+    color:white;
+    width:100%;
+    padding: 1em;
+    text-align: right;
   }
-  
-</style>
-
-<style>
-  
+  .container .row {
+    margin-top: 50px;
+  }
 </style>
