@@ -10,11 +10,13 @@ import Home from './modules/Home/Home.vue';
 import Stories from './modules/Stories/Stories.vue';
 import UserInfo from './modules/Common/UserInfo.vue';
 
+
+// Declare this component as global
 Vue.component('user-info', UserInfo);
 
 Vue.config.debug = true
 
-// State managemente
+// State management
 Vue.use( Vuex );
 
 const store = new Vuex.Store({
@@ -23,8 +25,10 @@ const store = new Vuex.Store({
   },
   mutations: {
     login ( state, user ) {
-    	console.log(user)
     	state.user = user;
+    },
+    logout( state ) {
+      delete state['user'];
     }
   }
 })
@@ -47,6 +51,11 @@ window.router = router;
 new Vue({
 	el: "#app",
 	components: [ Auth, Home ],
+  computed: {
+    loggedUser() {
+      return Object.keys( this.$store.state.user ).length;
+    }
+  },
 	// es6 shortcut for router: router
 	router: window.router,
 	store: window.store
