@@ -7,7 +7,7 @@ import Vue from 'vue';
 // Modules
 import Auth from './modules/Auth/Auth.vue';
 import Home from './modules/Home/Home.vue';
-
+import Stories from './modules/Stories/Stories.vue';
 import UserInfo from './modules/Common/UserInfo.vue';
 
 Vue.component('user-info', UserInfo);
@@ -36,7 +36,8 @@ Vue.use( VueRouter );
 
 const routes = [
 	{ path: '/', component: Auth },
-  	{ path: '/home', component: Home }
+  	{ path: '/home', component: Home },
+  	{ path: '/stories', component: Stories }
 ];
 
 const router = new VueRouter({ routes });

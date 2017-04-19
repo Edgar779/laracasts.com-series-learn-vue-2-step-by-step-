@@ -42,6 +42,8 @@
 
 <script>
 
+import axios from 'axios';
+
 class Errors {
   constructor() {
     this.errors = {};
@@ -75,6 +77,7 @@ class Stories {
     return axios.delete('/api/stories/' + _id ); 
   }
 }
+
 
 export default {
   name: 'stories',

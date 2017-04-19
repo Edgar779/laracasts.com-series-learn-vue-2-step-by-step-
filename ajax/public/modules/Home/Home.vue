@@ -1,7 +1,10 @@
 <template>
   <div class="col-md-12">
-    <user-info></user-info>
+    
     <h1>Home</h1>
+
+    <router-link to="stories">Stories</router-link>
+    <router-link to="users">Users</router-link>
   </div>
 </template>
 
