@@ -8,7 +8,7 @@ module.exports = function( app ){
         	res.json(user);
         })
         .catch( (err ) => {
-        	res.status(422).json(err);
+        	res.status(422).json( err.errors );
         });
     });
 }

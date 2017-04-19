@@ -59,14 +59,22 @@ export default {
       Auth.login( this.user )
               .then( this.onSuccess )
               .catch( ( errors ) => { 
-                console.log(errors)
-                this.errors.record( errors.response.data ) 
+                if ( errors.response ) {
+                  this.errors.record( errors.response.data )   
+                }
+                else {
+                  alert("Invalid user data");
+                }
+                
               });
     },
     onSuccess( response ) {
       if ( response.data._id ) {
         this.$store.commit("login", response.data );
         this.$router.push("/home");
+      }
+      else {
+        alert("Invalid user data");
       }
     }
   }
