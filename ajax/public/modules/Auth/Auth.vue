@@ -1,5 +1,5 @@
 <template>
-  <div class="col-md-4 login">
+  <div class="col-md-4 login text-center">
     <h1>Login</h1>
     
     <form action="/login" @submit.prevent="onSubmit" @keydown="errors.clear($event)">
@@ -84,5 +84,14 @@ export default {
 <style>
   .row {
     margin:0 auto;
+  }
+  .login {
+    margin:0 auto;
+    float: none;
+    display: block;
+  }
+  .login form {
+    text-align: left;
+    margin-top: 30px;
   }
 </style>>
