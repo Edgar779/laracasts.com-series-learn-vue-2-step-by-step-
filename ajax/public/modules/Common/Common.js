@@ -32,11 +32,11 @@ export class Form {
   }
   // Returns the payload of the form to send
   data() {
-    // Clone this
-    let data = Object.assign({}, this);
+    let data = {};
 
-    delete data.originalData;
-    delete data.errors;
+    for (let field in this.originalData ) {
+      data[field] = this[field];
+    };
 
     return data;
   }
