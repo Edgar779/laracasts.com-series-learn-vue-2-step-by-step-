@@ -30,6 +30,17 @@ module.exports = ( app ) => {
     });
 
     // Updates a story
+    app.put('/api/stories', ( req, res, next ) => {
+
+    	Story.update({ _id: req.body._id }, req.body, { multi: false },( err, numAffected ) => {
+		  	if ( err ) {
+		  		res.status( 422 ).send( err.errors );
+		  	}
+		  	else {
+				Story.find({}, ( err, stories ) => res.json( stories ));
+			}
+		})
+    });
 
     // Deletes a story
     app.delete('/api/stories/:_id', ( req, res ) => {

@@ -1,5 +1,5 @@
 <template>
-  <div class="col-md-12">
+  <div class="col-md-12" id="stories">
     <h1> {{ pageTitle }} </h1>
     <ul>
       <li v-for="story in stories">
@@ -53,12 +53,12 @@ class Stories {
   }
 }
 
-
 export default {
   name: 'stories',
   data () {
     return {
       form: new Form({
+        _id: null,
         title: "",
         body: ""
       }),
@@ -67,7 +67,7 @@ export default {
   },
   computed: {
     pageTitle() {
-      return ( this.form["_id"] ) ? "Update story" : "Stories";
+      return ( this.form["_id"] != null ) ? "Update story" : "Stories";
     }
   },
   mounted() {
@@ -75,9 +75,9 @@ export default {
     Stories.getAll().then( stories => this.stories = stories.data );
   },
   methods: {
-    onSubmit( story ) {
-      var action = ( story.hasOwnProperty("_id") ) ? "put" : "post";
-
+    onSubmit() {
+      var action = ( this.form._id != null ) ? "put" : "post";
+      
       this.form.submit(action, 'stories')
                 .then( this.onSuccess )
                 .catch( (errors) => {
@@ -87,6 +87,10 @@ export default {
     onSuccess( stories ) {
       this.stories = stories.data;
       this.form.reset();
+    },
+    update( story ) {
+      console.log(story._id)
+      this.form.setData( story );
     },
     // Removes a story
     remove( story ) {
@@ -110,8 +114,9 @@ export default {
   }
   #stories ul li ul {
     position: absolute;
-    top:0;
+    top: 0;
     right: 0;
+    display: flex;
   }
   ul li {
     list-style: none;
