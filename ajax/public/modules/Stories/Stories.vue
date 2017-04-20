@@ -12,28 +12,28 @@
       </li>
     </ul>
     
-    <form action="/stories" @submit.prevent="onSubmit" @keydown="errors.clear($event)">
+    <form action="stories" @submit.prevent="onSubmit" @keydown="form.errors.clear($event)">
       <div  class="form-group" 
-            v-bind:class="{'has-error': errors.get('title') && submited}"
-            @keydown="errors.clear('title')">
+            v-bind:class="{'has-error': form.errors.get('title') && form.submited}"
+            @keydown="form.errors.clear('title')">
         <label>Title:</label>
          <input type="text" 
                 name="title"
                 class="form-control" 
-                v-model="story.title">
+                v-model="form.title">
          <span  class="help is-danger" 
-                v-text="errors.get('title')"></span>
+                v-text="form.errors.get('title')"></span>
       </div>
       <div  class="form-group" 
-            v-bind:class="{'has-error': errors.get('body') && submited}">
+            v-bind:class="{'has-error': form.errors.get('body') && form.submited}">
         <label>Body:</label>
         <textarea class="form-control"
                   name="body"
-                  v-model="story.body"                   
+                  v-model="form.body"                   
                   ></textarea>
 
         <span class="help is-danger" 
-              v-text="errors.get('body')"></span>
+              v-text="form.errors.get('body')"></span>
       </div>
       <button type="submit" class="btn btn-default">Submit</button>
     </form>
@@ -41,37 +41,12 @@
 </template>
 
 <script>
-
+import { Form, Errors } from '../Common/Common.js';
 import axios from 'axios';
-
-class Errors {
-  constructor() {
-    this.errors = {};
-  }
-  get( field ) {
-    if ( this.errors[field] ) {
-      return this.errors[field].message;
-    }
-  }
-  record( errors ) {
-    this.errors = errors;
-  }
-  clear( ev ) {
-    if ( ev.target ) {
-      delete this.errors[ ev.target.name ];
-    } 
-  }
-}
 
 class Stories {
   static getAll() {
     return axios.get('/api/stories');
-  }
-  static update( story ) {
-    return axios.put('/api/stories/', story);
-  }
-  static create( story ) {
-    return axios.post('/api/stories', story);
   }
   static delete( _id ) {
     return axios.delete('/api/stories/' + _id ); 
@@ -83,18 +58,16 @@ export default {
   name: 'stories',
   data () {
     return {
-      story: {
+      form: new Form({
         title: "",
         body: ""
-      },
-      submited: false,
-      stories: [],
-      errors: new Errors()
+      }),
+      stories: []
     }
   },
   computed: {
     pageTitle() {
-      return ( this.story["_id"] ) ? "Update story" : "Stories";
+      return ( this.form["_id"] ) ? "Update story" : "Stories";
     }
   },
   mounted() {
@@ -103,27 +76,23 @@ export default {
   },
   methods: {
     onSubmit( story ) {
-      this.submited = true;
-      var action = ( story.hasOwnProperty("_id") ) ? "update" : "create";
+      var action = ( story.hasOwnProperty("_id") ) ? "put" : "post";
 
-      Stories[ action ]( this.story )
-              .then( this.onSuccess )
-              .catch( ( errors ) => { 
-                this.errors.record( errors.response.data ) 
-              });
+      this.form.submit(action, 'stories')
+                .then( this.onSuccess )
+                .catch( (errors) => {
+                  this.form.errors.record( errors.response.data );
+                });
     },
     onSuccess( stories ) {
       this.stories = stories.data;
-      this.story.title = this.story.body = "";
-      this.submited = false;
-    },
-    update( story ) {
-
+      this.form.reset();
     },
     // Removes a story
     remove( story ) {
       Stories.delete( story._id ).then( ( response ) => {
-        if ( response.data.success && this.stories.splice( this.stories.indexOf( story ), 1));
+        let indx = this.stories.indexOf( story );
+        if ( response.data.success && this.stories.splice( indx, 1) );
       });
     }
   }
