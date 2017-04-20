@@ -35,12 +35,6 @@
 import axios from 'axios';
 import { Form, Errors } from '../Common/Common.js';
 
-class Auth {
-  static login( user ) {
-    return axios.post('/api/user/login', user); 
-  }
-}
-
 export default {
   name: 'auth',
   data () {

@@ -24,11 +24,14 @@ export class Form {
     this.submited = false;
     this.originalData = fields;
 
-    for ( let field in fields ) {
-      this[ field ] = fields[field];
-    }
-
+    this.setData( fields );
+    
     this.errors = new Errors();
+  }
+  setData( data ) {
+    for ( let field in data ) {
+      this[ field ] = data[field];
+    }
   }
   // Returns the payload of the form to send
   data() {
