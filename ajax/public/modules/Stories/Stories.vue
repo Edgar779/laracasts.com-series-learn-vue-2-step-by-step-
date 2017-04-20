@@ -1,8 +1,11 @@
 <template>
   <div class="col-md-12" id="stories">
     <h1> {{ pageTitle }} </h1>
+    <label>
+      Filter stories by title: <input v-model="searchText" />
+    </label>
     <ul>
-      <li v-for="story in stories">
+      <li v-for="story in filteredStories">
         <h3> {{ story.title }} </h3>
         <p>{{ story.body }}</p>
         <ul>
@@ -62,12 +65,18 @@ export default {
         title: "",
         body: ""
       }),
+      searchText: "",
       stories: []
     }
   },
   computed: {
     pageTitle() {
       return ( this.form["_id"] != null ) ? "Update story" : "Stories";
+    },
+    filteredStories: function () {
+      return this.stories.filter(( story ) => {
+        return story.title.indexOf( this.searchText ) !== -1;
+      });
     }
   },
   mounted() {
