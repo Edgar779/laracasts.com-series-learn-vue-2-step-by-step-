@@ -96,7 +96,7 @@ export default {
     },
     // Removes a story
     remove( story ) {
-      Stories.delete( story._id ).then( ( response ) => {
+      Stories.delete( story._id ).then( response => {
         let indx = this.stories.indexOf( story );
         if ( response.data.success && this.stories.splice( indx, 1) );
       });
