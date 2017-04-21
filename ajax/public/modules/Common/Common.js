@@ -45,7 +45,26 @@ export class Form {
   }
   submit( requestType, url ) {
     this.submited = true;
-    return axios[requestType]('/api/' + url, this.data() );
+
+    return new Promise( ( resolve, reject ) => {
+
+      axios[requestType]('/api/' + url, this.data() )
+          .then( response => {
+            this.onSuccess( response );
+            resolve( response );
+          })
+          .catch( errors => {
+            this.onFail( errors.response.data );
+            reject( errors.response.data );
+          })
+    })
+    
+  }
+  onSuccess( response ) {
+    this.reset();
+  }
+  onFail( errors ) {
+    this.errors.record( errors );
   }
   reset() {
     this.submited = false;

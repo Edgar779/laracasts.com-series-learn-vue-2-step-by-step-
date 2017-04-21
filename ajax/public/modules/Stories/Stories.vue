@@ -88,17 +88,10 @@ export default {
       var action = ( this.form._id != null ) ? "put" : "post";
       
       this.form.submit(action, 'stories')
-                .then( this.onSuccess )
-                .catch( (errors) => {
-                  this.form.errors.record( errors.response.data );
-                });
-    },
-    onSuccess( stories ) {
-      this.stories = stories.data;
-      this.form.reset();
+                .then( stories => this.stories = stories.data )
+                .catch(errors => alert( errors ));
     },
     update( story ) {
-      console.log(story._id)
       this.form.setData( story );
     },
     // Removes a story
@@ -116,7 +109,7 @@ export default {
   /* TODO: add reset.css */
   #stories > ul {
     overflow-y: scroll;
-    height: 50vh;
+    height: 37vh;
   }
   #stories ul li {
     position: relative;

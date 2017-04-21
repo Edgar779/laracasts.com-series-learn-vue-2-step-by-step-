@@ -50,12 +50,9 @@ export default {
       this.form.submit('post', 'user/login')
               .then( this.onSuccess )
               .catch( ( errors ) => { 
-                if ( errors.response ) {
-                  this.form.errors.record( errors.response.data );
-                }
-                else {
-                  alert("Invalid user data");
-                }
+                
+                alert("Error: " + errors);
+                
               });
     },
     onSuccess( response ) {
